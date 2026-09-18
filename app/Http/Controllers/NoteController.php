@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Note;
+use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
@@ -29,7 +29,7 @@ class NoteController extends Controller
             'content' => 'required|string',
         ]);
 
-        $note = new Note();
+        $note = new Note;
         $note->title = $validated['title'];
         $note->content = $validated['content'];
         $note->save();
@@ -43,6 +43,7 @@ class NoteController extends Controller
     public function show(string $id)
     {
         $note = Note::findOrFail($id);
+
         return $note;
     }
 

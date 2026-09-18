@@ -131,7 +131,7 @@ class NotesApiTest extends TestCase
      */
     public function test_note_has_valid_fields(): void
     {
-        $note = new Note();
+        $note = new Note;
 
         $note->title = 'A brief note on how I want to kill ChatGPT';
         $note->content = '...just kidding.';
@@ -173,9 +173,9 @@ class NotesApiTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_notes_update(): void 
+    public function test_notes_update(): void
     {
-        $note = new Note();
+        $note = new Note;
         $note->title = 'A brief note on how I want to kill ChatGPT';
         $note->content = '...just kidding.';
         $note->save();
@@ -186,7 +186,6 @@ class NotesApiTest extends TestCase
             'title' => 'This is a new title',
             'content' => 'This is a new content',
         ]);
-
 
         $response->assertStatus(200);
 
