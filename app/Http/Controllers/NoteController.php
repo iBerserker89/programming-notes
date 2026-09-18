@@ -24,13 +24,14 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        $title = $request->input('title');
-        $content = $request->input('content');
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
 
         $note = new Note();
-        $note->title = $title;
-        $note->content = $content;
-
+        $note->title = $validated['title'];
+        $note->content = $validated['content'];
         $note->save();
 
         return $note;
@@ -41,7 +42,8 @@ class NoteController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $note = Note::findOrFail($id);
+        return $note;
     }
 
     /**
@@ -49,7 +51,18 @@ class NoteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $note = Note::findOrFail($id);
+
+        $validated_field = $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+
+        $note->title = $validated_field['title'];
+        $note->content = $validated_field['content'];
+        $note->save();
+
+        return $note;
     }
 
     /**
