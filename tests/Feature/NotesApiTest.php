@@ -201,4 +201,20 @@ class NotesApiTest extends TestCase
             'content' => 'This is a new content',
         ]);
     }
+
+    public function test_note_successfully_deleted()
+    {
+        $note = new Note;
+        $note->title = 'A brief note';
+        $note->content = 'Some note content.';
+        $note->save();
+
+        $note_id = $note->id;
+
+        $response = $this->deleteJson("/notes/{$note_id}");
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing(Note::class, ['id' => $note_id]);
+    }
 }
