@@ -173,6 +173,16 @@ class NotesApiTest extends TestCase
         $response->assertNotFound();
     }
 
+    public function test_update_note_not_found(): void
+    {
+        $response = $this->patchJson('/notes/999999', [
+            'title' => 'New title',
+            'content' => 'New content',
+        ]);
+
+        $response->assertNotFound();
+    }
+
     public function test_notes_update(): void
     {
         $note = new Note;
