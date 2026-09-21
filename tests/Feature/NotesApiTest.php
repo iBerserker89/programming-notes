@@ -236,4 +236,20 @@ class NotesApiTest extends TestCase
 
         $this->assertDatabaseMissing(Note::class, ['id' => $note_id]);
     }
+
+    /**
+     * Verifies the behavior when deleting a note that does not exist.
+     *
+     * Since RefreshDatabase gives this test a clean database and
+     * no note with this ID is created, HTTP 404 is expected.
+     *
+     * This behavior is provided by findOrFail()
+     * inside the NoteController.
+     */
+    public function test_delete_note_not_found(): void
+    {
+        $response = $this->deleteJson('/notes/999999');
+
+        $response->assertNotFound();
+    }
 }
