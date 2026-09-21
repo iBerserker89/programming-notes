@@ -173,6 +173,25 @@ class NotesApiTest extends TestCase
         $response->assertNotFound();
     }
 
+    /**
+     * Verifies the behavior when updating a note that does not exist.
+     *
+     * Since RefreshDatabase gives this test a clean database and
+     * no note with this ID is created, HTTP 404 is expected.
+     *
+     * This behavior is provided by findOrFail()
+     * inside the NoteController.
+     */
+    public function test_update_note_not_found(): void
+    {
+        $response = $this->patchJson('/notes/999999', [
+            'title' => 'New title',
+            'content' => 'New content',
+        ]);
+
+        $response->assertNotFound();
+    }
+
     public function test_notes_update(): void
     {
         $note = new Note;
