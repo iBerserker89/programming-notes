@@ -32,13 +32,13 @@ class NotesApiTest extends TestCase
      * Verifies the endpoint responsible for listing notes.
      *
      * Since the database starts empty for this test, we expect:
-     * - GET /notes to return HTTP 200;
+     * - GET /api/notes to return HTTP 200;
      * - the "data" key to exist;
      * - "data" to initially contain an empty array.
      */
     public function test_notes_endpoint_returns_successful_response(): void
     {
-        $response = $this->getJson('/notes');
+        $response = $this->getJson('/api/notes');
 
         $response->assertStatus(200);
 
@@ -58,7 +58,7 @@ class NotesApiTest extends TestCase
      */
     public function test_note_successful_created(): void
     {
-        $response = $this->postJson('/notes', [
+        $response = $this->postJson('/api/notes', [
             'title' => 'First note',
             'content' => 'This was a successful POST request to the API.',
         ]);
@@ -94,7 +94,7 @@ class NotesApiTest extends TestCase
      */
     public function test_post_empty_title(): void
     {
-        $response = $this->postJson('/notes', [
+        $response = $this->postJson('/api/notes', [
             'title' => '',
             'content' => 'Some content',
         ]);
@@ -112,7 +112,7 @@ class NotesApiTest extends TestCase
      */
     public function test_post_empty_content(): void
     {
-        $response = $this->postJson('/notes', [
+        $response = $this->postJson('/api/notes', [
             'title' => 'Some title',
             'content' => '',
         ]);
@@ -148,7 +148,7 @@ class NotesApiTest extends TestCase
         $note_title = $note->title;
         $note_content = $note->content;
 
-        $response = $this->getJson("/notes/{$note_id}");
+        $response = $this->getJson("/api/notes/{$note_id}");
 
         $response->assertStatus(200);
 
@@ -172,7 +172,7 @@ class NotesApiTest extends TestCase
      */
     public function test_note_not_found(): void
     {
-        $response = $this->getJson('/notes/999999');
+        $response = $this->getJson('/api/notes/999999');
 
         $response->assertNotFound();
     }
@@ -188,7 +188,7 @@ class NotesApiTest extends TestCase
      */
     public function test_update_note_not_found(): void
     {
-        $response = $this->patchJson('/notes/999999', [
+        $response = $this->patchJson('/api/notes/999999', [
             'title' => 'New title',
             'content' => 'New content',
         ]);
@@ -205,7 +205,7 @@ class NotesApiTest extends TestCase
 
         $note_id = $note->id;
 
-        $response = $this->patchJson("/notes/{$note_id}", [
+        $response = $this->patchJson("/api/notes/{$note_id}", [
             'title' => 'This is a new title',
             'content' => 'This is a new content',
         ]);
@@ -236,7 +236,7 @@ class NotesApiTest extends TestCase
 
         $note_id = $note->id;
 
-        $response = $this->deleteJson("/notes/{$note_id}");
+        $response = $this->deleteJson("/api/notes/{$note_id}");
 
         $response->assertStatus(204);
 
@@ -254,7 +254,7 @@ class NotesApiTest extends TestCase
      */
     public function test_delete_note_not_found(): void
     {
-        $response = $this->deleteJson('/notes/999999');
+        $response = $this->deleteJson('/api/notes/999999');
 
         $response->assertNotFound();
     }
@@ -276,7 +276,7 @@ class NotesApiTest extends TestCase
         $note->save();
         $note_id = $note->id;
 
-        $response = $this->patchJson("/notes/{$note_id}", [
+        $response = $this->patchJson("/api/notes/{$note_id}", [
             'title' => 'New title',
         ]);
 
@@ -314,7 +314,7 @@ class NotesApiTest extends TestCase
         $note->save();
         $note_id = $note->id;
 
-        $response = $this->patchJson("/notes/{$note_id}", [
+        $response = $this->patchJson("/api/notes/{$note_id}", [
             'content' => 'Updated content',
         ]);
 
