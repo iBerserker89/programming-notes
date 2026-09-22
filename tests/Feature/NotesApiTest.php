@@ -66,10 +66,12 @@ class NotesApiTest extends TestCase
         // 201 means a new resource was successfully created.
         $response->assertStatus(201);
 
-        // Confirms that the JSON response contains the submitted data.
+        // Confirms that the JSON response contains the submitted data wrapped in 'data'.
         $response->assertJson([
-            'title' => 'First note',
-            'content' => 'This was a successful POST request to the API.',
+            'data' => [
+                'title' => 'First note',
+                'content' => 'This was a successful POST request to the API.',
+            ],
         ]);
 
         /*
@@ -211,9 +213,11 @@ class NotesApiTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertJson([
-            'id' => $note_id,
-            'title' => 'This is a new title',
-            'content' => 'This is a new content',
+            'data' => [
+                'id' => $note_id,
+                'title' => 'This is a new title',
+                'content' => 'This is a new content',
+            ],
         ]);
 
         $this->assertDatabaseHas(Note::class, [
@@ -278,6 +282,14 @@ class NotesApiTest extends TestCase
 
         $response->assertStatus(200);
 
+        $response->assertJson([
+            'data' => [
+                'id' => $note_id,
+                'title' => 'New title',
+                'content' => 'Some note content.',
+            ],
+        ]);
+
         $this->assertDatabaseHas(Note::class, [
             'id' => $note_id,
             'title' => 'New title',
@@ -307,6 +319,14 @@ class NotesApiTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                'id' => $note_id,
+                'title' => 'A brief note',
+                'content' => 'Updated content',
+            ],
+        ]);
 
         $this->assertDatabaseHas(Note::class, [
             'id' => $note_id,
