@@ -151,9 +151,11 @@ class NotesApiTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertJson([
-            'id' => $note_id,
-            'title' => $note_title,
-            'content' => $note_content,
+            'data' => [
+                'id' => $note_id,
+                'title' => $note_title,
+                'content' => $note_content,
+            ],
         ]);
     }
 
