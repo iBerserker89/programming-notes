@@ -252,4 +252,64 @@ class NotesApiTest extends TestCase
 
         $response->assertNotFound();
     }
+
+    /**
+     * Verifies that a partial update with only title works correctly.
+     *
+     * A note is created with both title and content.
+     * A PATCH request is sent with only the title field.
+     * The response should be HTTP 200.
+     * The title should be updated while content remains unchanged.
+     * The database should reflect the final state.
+     */
+    public function test_only_title_is_updated(): void
+    {
+        $note = new Note;
+        $note->title = 'A brief note';
+        $note->content = 'Some note content.';
+        $note->save();
+        $note_id = $note->id;
+
+        $response = $this->patchJson("/notes/{$note_id}", [
+            'title' => 'New title',
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas(Note::class, [
+            'id' => $note_id,
+            'title' => 'New title',
+            'content' => 'Some note content.',
+        ]);
+    }
+
+    /**
+     * Verifies that a partial update with only content works correctly.
+     *
+     * A note is created with both title and content.
+     * A PATCH request is sent with only the content field.
+     * The response should be HTTP 200.
+     * The content should be updated while title remains unchanged.
+     * The database should reflect the final state.
+     */
+    public function test_only_content_is_updated(): void
+    {
+        $note = new Note;
+        $note->title = 'A brief note';
+        $note->content = 'Some note content.';
+        $note->save();
+        $note_id = $note->id;
+
+        $response = $this->patchJson("/notes/{$note_id}", [
+            'content' => 'Updated content',
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas(Note::class, [
+            'id' => $note_id,
+            'title' => 'A brief note',
+            'content' => 'Updated content',
+        ]);
+    }
 }
