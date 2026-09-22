@@ -55,12 +55,18 @@ class NoteController extends Controller
         $note = Note::findOrFail($id);
 
         $validated_field = $request->validate([
-            'title' => 'required|string',
-            'content' => 'required|string',
+            'title' => 'sometimes|string',
+            'content' => 'sometimes|string',
         ]);
 
-        $note->title = $validated_field['title'];
-        $note->content = $validated_field['content'];
+        if (array_key_exists('title', $validated_field)) {
+            $note->title = $validated_field['title'];
+        }
+
+        if (array_key_exists('content', $validated_field)) {
+            $note->content = $validated_field['content'];
+        }
+
         $note->save();
 
         return $note;
