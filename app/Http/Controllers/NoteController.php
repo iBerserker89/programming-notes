@@ -34,7 +34,9 @@ class NoteController extends Controller
         $note->content = $validated['content'];
         $note->save();
 
-        return $note;
+        return response()->json([
+            'data' => $note,
+        ], 201);
     }
 
     /**
@@ -71,7 +73,9 @@ class NoteController extends Controller
 
         $note->save();
 
-        return $note;
+        return response()->json([
+            'data' => $note,
+        ]);
     }
 
     /**
