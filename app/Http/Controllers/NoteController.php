@@ -44,7 +44,9 @@ class NoteController extends Controller
     {
         $note = Note::findOrFail($id);
 
-        return $note;
+        return response()->json([
+            'data' => $note,
+        ]);
     }
 
     /**
